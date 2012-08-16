@@ -19,28 +19,28 @@ module Saxy
     def start_element(tag, attributes=[])
       @tag_stack << tag
 
-      if tag == @object_tag || @object_stack.any?
-        @object_stack << OpenStruct.new
+      if tag == @object_tag || object_stack.any?
+        object_stack << OpenStruct.new
       end
     end
 
     def end_element(tag)
-      @tag_stack.pop
-      object = @object_stack.pop
+      tag_stack.pop
+      object = object_stack.pop
     end
 
     def cdata_block(cdata)
-      @object_stack.pop
-      @object_stack << cdata
+      object_stack.pop
+      object_stack << cdata
     end
 
     def characters(chars)
-      if @object_stack.last.is_a?(OpenStruct)
-        @object_stack.pop
-        @object_stack << ""
+      if object_stack.last.is_a?(OpenStruct)
+        object_stack.pop
+        object_stack << ""
       end
 
-      @object_stack.last << chars.strip
+      object_stack.last << chars.strip
     end
   end
 end
