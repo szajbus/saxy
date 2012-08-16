@@ -19,6 +19,10 @@ module Saxy
 
     def end_element(tag)
       @stack.pop
+
+      if tag == @object_tag
+        @object = nil
+      end
     end
   end
 end

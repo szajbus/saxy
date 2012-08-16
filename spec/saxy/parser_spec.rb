@@ -38,4 +38,21 @@ describe Saxy::Parser do
     parser.start_element("other")
     parser.object.should be_nil
   end
+
+  context "with open object" do
+    before do
+      parser.start_element("product")
+      parser.object.should_not be_nil
+    end
+
+    it "should close object when detecting object tag closing" do
+      parser.end_element("product")
+      parser.object.should be_nil
+    end
+
+    it "should not close object when detecting other tag closing" do
+      parser.end_element("other")
+      parser.object.should_not be_nil
+    end
+  end
 end
