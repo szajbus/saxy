@@ -14,4 +14,7 @@ Gem::Specification.new do |gem|
   gem.name          = "saxy"
   gem.require_paths = ["lib"]
   gem.version       = Saxy::VERSION
+
+  gem.add_development_dependency "rspec"
+  gem.add_development_dependency "ZenTest"
 end

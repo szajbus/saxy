@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<webstore>
+  <name>Amazon</name>
+  <products>
+    <product>
+      <uid>FFCF177</uid>
+      <name>Kindle</name>
+      <description>The world's best-selling e-reader.</description>
+      <price>$109</price>
+    </product>
+  </products>
+</webstore>
