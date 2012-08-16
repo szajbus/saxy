@@ -86,33 +86,36 @@ describe Saxy::Parser do
         parser.object_stack.should be_empty
       end
     end
-  end
 
-  it "should have nil attribute_value by default" do
-    parser.attribute_value.should be_nil
-  end
+    context "when detecting cdata block" do
+      before do
+        parser.cdata_block("foo")
+      end
 
-  it "should set attribute_value to contents of cdata block" do
-    parser.cdata_block("foo")
-    parser.attribute_value.should == "foo"
-  end
-
-  it "should append attribute_value with contents of characters block" do
-    parser.characters("foo")
-    parser.characters("bar")
-    parser.attribute_value.should == "foobar"
-  end
-
-  context "with non-empty attribute_value" do
-    before do
-      parser.start_element("product")
-      parser.cdata_block("foo")
-      parser.attribute_value.should == "foo"
+      it "should replace top object in object stack with it's contents" do
+        parser.object_stack.last.should == "foo"
+      end
     end
 
-    it "should reset attribute_value after detecting tag closing" do
-      parser.end_element("product")
-      parser.attribute_value.should be_nil
+    context "when detecting characters block" do
+      before do
+        parser.characters("foo")
+      end
+
+      it "should replace top object in object stack with it's contents" do
+        parser.object_stack.last.should == "foo"
+      end
+    end
+
+    context "when detecting multiple characters blocks" do
+      before do
+        parser.characters("foo")
+        parser.characters("bar")
+      end
+
+      it "should replace top object in object stack with their concatenated contents" do
+        parser.object_stack.last.should == "foobar"
+      end
     end
   end
 end
