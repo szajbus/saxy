@@ -5,26 +5,30 @@ describe Saxy::Parser do
 
   let(:parser) { Saxy::Parser.new(fixture_file("webstore.xml"), "product") }
 
-  it "should push/pop tag names on/from stack when going down/up the XML tree" do
-    parser.stack.should == %w( )
+  it "should have empty tag stack" do
+    parser.tag_stack.should == %w( )
+  end
+
+  it "should push/pop tag names on/from tag stack when going down/up the XML tree" do
+    parser.tag_stack.should == %w( )
 
     parser.start_element('webstore')
-    parser.stack.should == %w( webstore )
+    parser.tag_stack.should == %w( webstore )
 
     parser.start_element('products')
-    parser.stack.should == %w( webstore products )
+    parser.tag_stack.should == %w( webstore products )
 
     parser.start_element('product')
-    parser.stack.should == %w( webstore products product )
+    parser.tag_stack.should == %w( webstore products product )
 
     parser.end_element('product')
-    parser.stack.should == %w( webstore products )
+    parser.tag_stack.should == %w( webstore products )
 
     parser.end_element('products')
-    parser.stack.should == %w( webstore )
+    parser.tag_stack.should == %w( webstore )
 
     parser.end_element('webstore')
-    parser.stack.should == %w( )
+    parser.tag_stack.should == %w( )
   end
 
   it "should open object when detecting object tag opening" do

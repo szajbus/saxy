@@ -2,15 +2,15 @@ require 'ostruct'
 
 module Saxy
   class Parser
-    attr_reader :stack, :object
+    attr_reader :tag_stack, :object
 
     def initialize(xml_file, object_tag)
       @xml_file, @object_tag = xml_file, object_tag
-      @stack = []
+      @tag_stack = []
     end
 
     def start_element(tag, attributes=[])
-      @stack << tag
+      @tag_stack << tag
 
       if tag == @object_tag
         @object = OpenStruct.new
@@ -18,7 +18,7 @@ module Saxy
     end
 
     def end_element(tag)
-      @stack.pop
+      @tag_stack.pop
 
       if tag == @object_tag
         @object = nil
