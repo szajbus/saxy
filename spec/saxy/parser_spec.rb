@@ -87,4 +87,32 @@ describe Saxy::Parser do
       end
     end
   end
+
+  it "should have nil attribute_value by default" do
+    parser.attribute_value.should be_nil
+  end
+
+  it "should set attribute_value to contents of cdata block" do
+    parser.cdata_block("foo")
+    parser.attribute_value.should == "foo"
+  end
+
+  it "should append attribute_value with contents of characters block" do
+    parser.characters("foo")
+    parser.characters("bar")
+    parser.attribute_value.should == "foobar"
+  end
+
+  context "with non-empty attribute_value" do
+    before do
+      parser.start_element("product")
+      parser.cdata_block("foo")
+      parser.attribute_value.should == "foo"
+    end
+
+    it "should reset attribute_value after detecting tag closing" do
+      parser.end_element("product")
+      parser.attribute_value.should be_nil
+    end
+  end
 end

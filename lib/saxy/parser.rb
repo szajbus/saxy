@@ -11,6 +11,9 @@ module Saxy
     # the XML tree.
     attr_reader :object_stack
 
+    # Attribute value built from CDATA or char blocks
+    attr_reader :attribute_value
+
     def initialize(xml_file, object_tag)
       @xml_file, @object_tag = xml_file, object_tag
       @tag_stack, @object_stack = [], []
@@ -27,6 +30,16 @@ module Saxy
     def end_element(tag)
       @tag_stack.pop
       @object_stack.pop
+      @attribute_value = nil
+    end
+
+    def cdata_block(cdata)
+      @attribute_value = cdata
+    end
+
+    def characters(chars)
+      @attribute_value ||= ""
+      @attribute_value << chars.strip
     end
   end
 end
