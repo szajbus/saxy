@@ -156,4 +156,8 @@ describe Saxy::Parser do
       object.foo_bar.should == "baz"
     end
   end
+
+  it "should raise Saxy::ParsingError on error" do
+    lambda { parser.error("Error message.") }.should raise_error(Saxy::ParsingError, "Error message.")
+  end
 end

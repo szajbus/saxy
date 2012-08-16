@@ -53,6 +53,10 @@ module Saxy
       objects.last << chars.strip
     end
 
+    def error(message)
+      raise ParsingError.new(message)
+    end
+
     def attribute_name(tag)
       tag.underscore
     end
