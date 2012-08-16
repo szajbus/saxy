@@ -27,6 +27,10 @@ module Saxy
     def end_element(tag)
       tag_stack.pop
       object = object_stack.pop
+
+      if object_stack.any?
+        object_stack.last.send("#{tag}=", object)
+      end
     end
 
     def cdata_block(cdata)

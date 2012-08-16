@@ -117,5 +117,15 @@ describe Saxy::Parser do
         parser.object_stack.last.should == "foobar"
       end
     end
+
+    it "should set object's attribute after processing tags" do
+      object = parser.object_stack.last
+
+      parser.start_element("foo")
+      parser.characters("bar")
+      parser.end_element("foo")
+
+      object.foo.should == "bar"
+    end
   end
 end
