@@ -18,16 +18,17 @@ module Saxy
     end
 
     def end_element(name)
+      @element_stack.pop
+
       if current_object
         if current_object.class == @matches[name]
           @callback.call(current_object)
           @object_stack.pop
-        else
+        elsif current_object.class == @element_stack.last
           current_object.send("#{attribute_name(name)}=", current_value)
         end
       end
 
-      @element_stack.pop
       @value_chunks = []
     end
 
