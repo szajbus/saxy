@@ -26,4 +26,16 @@ describe Saxy::Parser do
     parser.end_element('webstore')
     parser.stack.should == %w( )
   end
+
+  it "should open object when detecting object tag opening" do
+    parser.object.should be_nil
+    parser.start_element("product")
+    parser.object.should_not be_nil
+  end
+
+  it "should not open object when detecting other tag opening" do
+    parser.object.should be_nil
+    parser.start_element("other")
+    parser.object.should be_nil
+  end
 end
