@@ -1,3 +1,4 @@
+require 'active_support/core_ext/string/inflections'
 require 'ostruct'
 
 module Saxy
@@ -29,7 +30,7 @@ module Saxy
       object = object_stack.pop
 
       if object_stack.any?
-        object_stack.last.send("#{tag}=", object)
+        object_stack.last.send("#{attribute_name(tag)}=", object)
       end
     end
 
@@ -45,6 +46,10 @@ module Saxy
       end
 
       object_stack.last << chars.strip
+    end
+
+    def attribute_name(tag)
+      tag.underscore
     end
   end
 end

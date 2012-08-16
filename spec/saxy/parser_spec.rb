@@ -127,5 +127,15 @@ describe Saxy::Parser do
 
       object.foo.should == "bar"
     end
+
+    it "should underscore object's attribute names" do
+      object = parser.object_stack.last
+
+      parser.start_element("FooBar")
+      parser.characters("baz")
+      parser.end_element("FooBar")
+
+      object.foo_bar.should == "baz"
+    end
   end
 end
