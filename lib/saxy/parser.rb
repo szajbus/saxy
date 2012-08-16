@@ -12,6 +12,9 @@ module Saxy
     # the XML tree.
     attr_reader :objects
 
+    # Will yield objects inside the callback after they're built
+    attr_reader :callback
+
     def initialize(xml_file, object_tag)
       @xml_file, @object_tag = xml_file, object_tag
       @tags, @objects = [], []
@@ -31,6 +34,8 @@ module Saxy
 
       if objects.any?
         objects.last.send("#{attribute_name(tag)}=", object)
+      elsif callback
+        callback.call(object)
       end
     end
 

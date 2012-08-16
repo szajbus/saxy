@@ -87,6 +87,24 @@ describe Saxy::Parser do
       end
     end
 
+    context "with callback defined" do
+      before do
+        @callback = lambda { |object| object }
+        parser.stub(:callback).and_return(@callback)
+      end
+
+      it "should yield the object inside the callback after detecting object tag closing" do
+        @callback.should_receive(:call).with(parser.objects.last)
+        parser.end_element("product")
+      end
+
+      it "should not yield the object inside the callback after detecting other tag closing" do
+        parser.start_element("other")
+        @callback.should_not_receive(:call)
+        parser.end_element("other")
+      end
+    end
+
     context "when detecting cdata block" do
       before do
         parser.cdata_block("foo")
