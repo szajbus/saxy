@@ -2,7 +2,14 @@ require 'ostruct'
 
 module Saxy
   class Parser
-    attr_reader :tag_stack, :object_stack
+    # Stack of XML tags built while traversing XML tree
+    attr_reader :tag_stack
+
+    # Stack of objects built while traversing XML tree
+    #
+    # First object is pushed to the stack only after finding the object_tag in
+    # the XML tree.
+    attr_reader :object_stack
 
     def initialize(xml_file, object_tag)
       @xml_file, @object_tag = xml_file, object_tag
