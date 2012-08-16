@@ -31,32 +31,60 @@ describe Saxy::Parser do
     parser.tag_stack.should == %w( )
   end
 
-  it "should open object when detecting object tag opening" do
-    parser.object.should be_nil
-    parser.start_element("product")
-    parser.object.should_not be_nil
-  end
-
-  it "should not open object when detecting other tag opening" do
-    parser.object.should be_nil
-    parser.start_element("other")
-    parser.object.should be_nil
-  end
-
-  context "with open object" do
+  context "when detecting object tag opening" do
     before do
       parser.start_element("product")
-      parser.object.should_not be_nil
     end
 
-    it "should close object when detecting object tag closing" do
-      parser.end_element("product")
-      parser.object.should be_nil
+    it "should add new object to stack" do
+      parser.object_stack.size.should == 1
+    end
+  end
+
+  context "when detecting other tag opening" do
+    before do
+      parser.start_element("other")
     end
 
-    it "should not close object when detecting other tag closing" do
-      parser.end_element("other")
-      parser.object.should_not be_nil
+    it "should not add new object to stack" do
+      parser.object_stack.should be_empty
+    end
+  end
+
+  context "with non-empty object stack" do
+    before do
+      parser.start_element("product")
+      parser.object_stack.should_not be_empty
+    end
+
+    context "when detecting object tag opening" do
+      before do
+        parser.start_element("product")
+      end
+
+      it "should add new object to stack" do
+        parser.object_stack.size.should == 2
+      end
+    end
+
+    context "when detecting other tag opening" do
+      before do
+        parser.start_element("other")
+      end
+
+      it "should not add new object to stack" do
+        parser.object_stack.size.should == 2
+      end
+    end
+
+    context "when detecting any tag closing" do
+      before do
+        parser.end_element("any")
+      end
+
+      it "should pop object from stack" do
+        parser.object_stack.should be_empty
+      end
     end
   end
 end
