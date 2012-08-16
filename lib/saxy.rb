@@ -1,3 +1,4 @@
+require "saxy/parser"
 require "saxy/version"
 
 module Saxy
