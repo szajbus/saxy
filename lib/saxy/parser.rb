@@ -1,8 +1,11 @@
 require 'active_support/core_ext/string/inflections'
+require 'nokogiri'
 require 'ostruct'
 
 module Saxy
-  class Parser
+  class Parser < Nokogiri::XML::SAX::Document
+    include Enumerable
+
     # Stack of XML tags built while traversing XML tree
     attr_reader :tags
 
@@ -40,17 +43,19 @@ module Saxy
     end
 
     def cdata_block(cdata)
-      objects.pop
-      objects << cdata
+      if objects.last
+        objects.pop
+        objects << cdata
+      end
     end
 
     def characters(chars)
       if objects.last.is_a?(OpenStruct)
         objects.pop
         objects << ""
+      elsif objects.last
+        objects.last << chars.strip
       end
-
-      objects.last << chars.strip
     end
 
     def error(message)
@@ -59,6 +64,13 @@ module Saxy
 
     def attribute_name(tag)
       tag.underscore
+    end
+
+    def each(&blk)
+      @callback = blk
+
+      parser = Nokogiri::XML::SAX::Parser.new(self)
+      parser.parse_file(@xml_file)
     end
   end
 end
