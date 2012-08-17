@@ -1,3 +1,4 @@
+require "saxy/element"
 require "saxy/parser"
 require "saxy/parsing_error"
 require "saxy/version"
