@@ -7,12 +7,20 @@
       <name>Kindle</name>
       <description>The world's best-selling e-reader.</description>
       <price>$109</price>
+      <images>
+        <thumb>http://amazon.com/kindle_thumb.jpg</thumb>
+        <large>http://amazon.com/kindle.jpg</large>
+      </images>
     </product>
     <product>
       <uid>YD26NT</uid>
       <name>Kindle Touch</name>
       <description>Simple-to-use touchscreen with built-in WIFI.</description>
       <price>$79</price>
+      <images>
+        <thumb>http://amazon.com/kindle_touch_thumb.jpg</thumb>
+        <large>http://amazon.com/kindle_touch.jpg</large>
+      </images>
     </product>
   </products>
 </webstore>
