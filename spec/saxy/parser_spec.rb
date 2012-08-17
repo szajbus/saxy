@@ -36,8 +36,8 @@ describe Saxy::Parser do
       parser.start_element("product")
     end
 
-    it "should add new object to stack" do
-      parser.objects.size.should == 1
+    it "should add new element to stack" do
+      parser.elements.size.should == 1
     end
   end
 
@@ -46,15 +46,15 @@ describe Saxy::Parser do
       parser.start_element("other")
     end
 
-    it "should not add new object to stack" do
-      parser.objects.should be_empty
+    it "should not add new element to stack" do
+      parser.elements.should be_empty
     end
   end
 
-  context "with non-empty object stack" do
+  context "with non-empty element stack" do
     before do
       parser.start_element("product")
-      parser.objects.should_not be_empty
+      parser.elements.should_not be_empty
     end
 
     context "when detecting object tag opening" do
@@ -62,8 +62,8 @@ describe Saxy::Parser do
         parser.start_element("product")
       end
 
-      it "should add new object to stack" do
-        parser.objects.size.should == 2
+      it "should add new element to stack" do
+        parser.elements.size.should == 2
       end
     end
 
@@ -72,8 +72,8 @@ describe Saxy::Parser do
         parser.start_element("other")
       end
 
-      it "should not add new object to stack" do
-        parser.objects.size.should == 2
+      it "should not add new element to stack" do
+        parser.elements.size.should == 2
       end
     end
 
@@ -82,8 +82,8 @@ describe Saxy::Parser do
         parser.end_element("any")
       end
 
-      it "should pop object from stack" do
-        parser.objects.should be_empty
+      it "should pop element from stack" do
+        parser.elements.should be_empty
       end
     end
 
@@ -94,7 +94,7 @@ describe Saxy::Parser do
       end
 
       it "should yield the object inside the callback after detecting object tag closing" do
-        @callback.should_receive(:call).with(parser.objects.last)
+        @callback.should_receive(:call).with(parser.current_element.as_object)
         parser.end_element("product")
       end
 
@@ -105,55 +105,26 @@ describe Saxy::Parser do
       end
     end
 
-    context "when detecting cdata block" do
-      before do
-        parser.cdata_block("foo")
-      end
-
-      it "should replace top object in object stack with it's contents" do
-        parser.objects.last.should == "foo"
-      end
+    it "should append cdata block's contents to top element's value when detecting cdata block" do
+      parser.current_element.should_receive(:append_value).with("foo")
+      parser.cdata_block("foo")
     end
 
-    context "when detecting characters block" do
-      before do
-        parser.characters("foo")
-      end
-
-      it "should replace top object in object stack with it's contents" do
-        parser.objects.last.should == "foo"
-      end
+    it "should append characters to top element's value when detecting characters block" do
+      parser.current_element.should_receive(:append_value).with("foo")
+      parser.current_element.should_receive(:append_value).with("bar")
+      parser.characters("foo")
+      parser.characters("bar")
     end
 
-    context "when detecting multiple characters blocks" do
-      before do
-        parser.characters("foo")
-        parser.characters("bar")
-      end
+    it "should set element's attribute after processing tags" do
+      element = parser.current_element
 
-      it "should replace top object in object stack with their concatenated contents" do
-        parser.objects.last.should == "foobar"
-      end
-    end
-
-    it "should set object's attribute after processing tags" do
-      object = parser.objects.last
+      element.should_receive(:set_attribute).with("foo", "bar")
 
       parser.start_element("foo")
       parser.characters("bar")
       parser.end_element("foo")
-
-      object.foo.should == "bar"
-    end
-
-    it "should underscore object's attribute names" do
-      object = parser.objects.last
-
-      parser.start_element("FooBar")
-      parser.characters("baz")
-      parser.end_element("FooBar")
-
-      object.foo_bar.should == "baz"
     end
   end
 

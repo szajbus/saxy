@@ -1,6 +1,4 @@
-require 'active_support/core_ext/string/inflections'
 require 'nokogiri'
-require 'ostruct'
 
 module Saxy
   class Parser < Nokogiri::XML::SAX::Document
@@ -9,61 +7,55 @@ module Saxy
     # Stack of XML tags built while traversing XML tree
     attr_reader :tags
 
-    # Stack of objects built while traversing XML tree
+    # Stack of elements built while traversing XML tree
     #
-    # First object is pushed to the stack only after finding the object_tag in
+    # First element is pushed to the stack only after finding the object_tag in
     # the XML tree.
-    attr_reader :objects
+    attr_reader :elements
 
     # Will yield objects inside the callback after they're built
     attr_reader :callback
 
     def initialize(xml_file, object_tag)
       @xml_file, @object_tag = xml_file, object_tag
-      @tags, @objects = [], []
+      @tags, @elements = [], []
     end
 
     def start_element(tag, attributes=[])
       @tags << tag
 
-      if tag == @object_tag || objects.any?
-        objects << OpenStruct.new
+      if tag == @object_tag || elements.any?
+        elements << Element.new
       end
     end
 
     def end_element(tag)
       tags.pop
-      object = objects.pop
+      if element = elements.pop
+        object = element.as_object
 
-      if objects.any?
-        objects.last.send("#{attribute_name(tag)}=", object)
-      elsif callback
-        callback.call(object)
+        if current_element
+          current_element.set_attribute(tag, object)
+        elsif callback
+          callback.call(object)
+        end
       end
     end
 
     def cdata_block(cdata)
-      if objects.last
-        objects.pop
-        objects << cdata
-      end
+      current_element.append_value(cdata) if current_element
     end
 
     def characters(chars)
-      if objects.last.is_a?(OpenStruct)
-        objects.pop
-        objects << ""
-      elsif objects.last
-        objects.last << chars.strip
-      end
+      current_element.append_value(chars) if current_element
     end
 
     def error(message)
       raise ParsingError.new(message)
     end
 
-    def attribute_name(tag)
-      tag.underscore
+    def current_element
+      elements.last
     end
 
     def each(&blk)
