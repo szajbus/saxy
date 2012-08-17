@@ -1,5 +1,7 @@
 # Saxy
 
+[![Build Status](https://secure.travis-ci.org/monterail/saxy.png)](http://travis-ci.org/monterail/saxy)
+
 Memory-efficient XML parser. Finds object definitions in XML and translates them into Ruby objects.
 
 It uses SAX parser under the hood, which means that it doesn't load the whole XML file into memory. It goes once though it and yields objects along the way.
