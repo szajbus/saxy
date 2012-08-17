@@ -4,9 +4,7 @@ describe Saxy do
   include FixturesHelper
 
   it "should find object definitions in XML file and yield them as Ruby objects" do
-    parser = Saxy::Parser.new(fixture_file("webstore.xml"), "product")
-
-    products = parser.inject([]) do |arr, product|
+    products = Saxy.parse(fixture_file("webstore.xml"), "product").inject([]) do |arr, product|
       arr << product
       arr
     end
@@ -20,5 +18,9 @@ describe Saxy do
     products[1].name.should == "Kindle Touch"
     products[1].description.should == "Simple-to-use touchscreen with built-in WIFI."
     products[1].price.should == "$79"
+  end
+
+  it "should return Enumerator when calling #parse without a block" do
+    Saxy.parse(fixture_file("webstore.xml"), "product").each.should be_instance_of Enumerator
   end
 end
