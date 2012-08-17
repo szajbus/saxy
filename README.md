@@ -34,6 +34,12 @@ Assume the XML file:
             <thumb>http://amazon.com/kindle_thumb.jpg</thumb>
           </images>
         </product>
+        <product>
+          <name>Kindle Touch - Simple-to-use touchscreen with built-in WIFI.</name>
+          <images>
+            <thumb>http://amazon.com/kindle_touch_thumb.jpg</thumb>
+          </images>
+        </product>
       </products>
     </webstore>
 
@@ -42,9 +48,15 @@ You instantiate the parser by passing path to XML file and object-identyfing tag
 The following will parse the XML, find product definitions (inside `<product>` and `</product>` tags), build `OpenStruct`s and yield them inside the block:
 
     Saxy.parse("filename.xml", "product").each do |product|
-      puts product.name # => "Kindle - The world's best-selling e-reader."
-      puts product.images.thumb # => "http://amazon.com/kindle_thumb.jpg"
+      puts product.name
+      puts product.images.thumb
     end
+
+    # =>
+      Kindle - The world's best-selling e-reader.
+      http://amazon.com/kindle_thumb.jpg
+      Kindle Touch - Simple-to-use touchscreen with built-in WIFI.
+      http://amazon.com/kindle_touch_thumb.jpg
 
 Saxy supports Enumerable, so you can use it's goodies to your comfort without building intermediate arrays:
 
@@ -55,6 +67,11 @@ Saxy supports Enumerable, so you can use it's goodies to your comfort without bu
 You can also grab an Enumerator for external use (e.g. lazy evaluation, etc.):
 
     enumerator = Saxy.parse("filename.xml", "product").each
+
+Multiple definitions of child objects are grouped in arrays:
+
+    webstore = Saxy.parse("filename.xml", "webstore").first
+    webstore.products.product.size # => 2
 
 ## Contributing
 

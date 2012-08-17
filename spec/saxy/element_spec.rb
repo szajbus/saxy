@@ -31,4 +31,10 @@ describe Saxy::Element do
     element.set_attribute("FooBar", "baz")
     element.as_object.foo_bar.should == "baz"
   end
+
+  it "should create array if adding multiple attributtes with the same name" do
+    element.set_attribute("foo", "bar")
+    element.set_attribute("foo", "baz")
+    element.as_object.foo.should == ["bar", "baz"]
+  end
 end

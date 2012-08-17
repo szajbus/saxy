@@ -11,7 +11,9 @@ module Saxy
     end
 
     def set_attribute(name, value)
-      attributes[attribute_name(name)] = value
+      name = attribute_name(name)
+      attributes[name] ||= []
+      attributes[name] << value
     end
 
     def append_value(string)
@@ -22,7 +24,16 @@ module Saxy
     end
 
     def as_object
-      attributes.any? ? OpenStruct.new(attributes) : value
+      if attributes.any?
+        object = OpenStruct.new
+        attributes.each do |name, value|
+          value = value.first if value.size == 1
+          object.send("#{name}=", value)
+        end
+        object
+      else
+        value
+      end
     end
 
     def attribute_name(name)

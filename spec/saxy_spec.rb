@@ -24,6 +24,13 @@ describe Saxy do
     products[1].images.large.should == "http://amazon.com/kindle_touch.jpg"
   end
 
+  it "should group multiple definitions of child objects into arrays" do
+    webstore = Saxy.parse(fixture_file("webstore.xml"), "webstore").first
+
+    webstore.products.product.should be_instance_of Array
+    webstore.products.product.size.should == 2
+  end
+
   it "should return Enumerator when calling #parse without a block", :unless => RUBY_1_8 do
     Saxy.parse(fixture_file("webstore.xml"), "product").each.should be_instance_of Enumerator
   end
