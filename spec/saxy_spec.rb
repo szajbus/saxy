@@ -24,7 +24,11 @@ describe Saxy do
     products[1].images.large.should == "http://amazon.com/kindle_touch.jpg"
   end
 
-  it "should return Enumerator when calling #parse without a block" do
+  it "should return Enumerator when calling #parse without a block", :unless => RUBY_1_8 do
     Saxy.parse(fixture_file("webstore.xml"), "product").each.should be_instance_of Enumerator
+  end
+
+  it "should return Enumerator when calling #parse without a block", :if => RUBY_1_8 do
+    Saxy.parse(fixture_file("webstore.xml"), "product").each.should be_instance_of Enumerable::Enumerator
   end
 end

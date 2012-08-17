@@ -65,7 +65,7 @@ module Saxy
         parser = Nokogiri::XML::SAX::Parser.new(self)
         parser.parse_file(@xml_file)
       else
-        Enumerator.new(self, :each)
+        (RUBY_VERSION =~ /^1\.8/ ? Enumerable::Enumerator : Enumerator).new(self, :each)
       end
     end
   end
