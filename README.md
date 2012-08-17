@@ -29,13 +29,9 @@ Assume the XML file:
       <name>Amazon</name>
       <products>
         <product>
-          <uid>FFCF177</uid>
-          <name>Kindle</name>
-          <description>The world's best-selling e-reader.</description>
-          <price>$109</price>
+          <name>Kindle - The world's best-selling e-reader.</name>
           <images>
             <thumb>http://amazon.com/kindle_thumb.jpg</thumb>
-            <large>http://amazon.com/kindle.jpg</large>
           </images>
         </product>
       </products>
@@ -46,12 +42,7 @@ You instantiate the parser by passing path to XML file and object-identyfing tag
 The following will parse the XML, find product definitions (inside `<product>` and `</product>` tags), build `OpenStruct`s and yield them inside the block:
 
     Saxy.parse("filename.xml", "product").each do |product|
-      puts product.uid # => FFCF177
-      puts product.name # => "Kindle"
-      puts product.description # => "The world's best-selling e-reader."
-      puts product.price # => "$109"
-
-      # nested objects are build as well
+      puts product.name # => "Kindle - The world's best-selling e-reader."
       puts product.images.thumb # => "http://amazon.com/kindle_thumb.jpg"
     end
 
