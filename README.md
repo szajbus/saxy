@@ -1,6 +1,8 @@
 # Saxy
 
-TODO: Write a gem description
+Memory-efficient XML parser. Finds object definitions in XML and translates them into Ruby objects.
+
+It uses SAX parser under the hood, which means that it doesn't load the whole XML file into memory. It goes once though it and yields objects along the way.
 
 ## Installation
 
@@ -18,7 +20,48 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Assume the XML file:
+
+    <?xml version='1.0' encoding='UTF-8'?>
+    <webstore>
+      <name>Amazon</name>
+      <products>
+        <product>
+          <uid>FFCF177</uid>
+          <name>Kindle</name>
+          <description>The world's best-selling e-reader.</description>
+          <price>$109</price>
+          <images>
+            <thumb>http://amazon.com/kindle_thumb.jpg</thumb>
+            <large>http://amazon.com/kindle.jpg</large>
+          </images>
+        </product>
+      </products>
+    </webstore>
+
+You instantiate the parser by passing path to XML file and object-identyfing tag name as it's arguments.
+
+The following will parse the XML, find product definitions (inside `<product>` and `</product>` tags), build `OpenStruct`s and yield them inside the block:
+
+    Saxy.parse("filename.xml", "product").each do |product|
+      puts product.uid # => FFCF177
+      puts product.name # => "Kindle"
+      puts product.description # => "The world's best-selling e-reader."
+      puts product.price # => "$109"
+
+      # nested objects are build as well
+      puts product.images.thumb # => "http://amazon.com/kindle_thumb.jpg"
+    end
+
+Saxy supports Enumerable, so you can use it's goodies to your comfort without building intermediate arrays:
+
+    Saxy.parse("filename.xml", "product").map do |object|
+      # map OpenStructs to ActiveRecord instances, etc.
+    end
+
+You can also grab an Enumerator for external use (e.g. lazy evaluation, etc.):
+
+    enumerator = Saxy.parse("filename.xml", "product").each
 
 ## Contributing
 
