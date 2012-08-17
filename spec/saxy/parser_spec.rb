@@ -131,4 +131,8 @@ describe Saxy::Parser do
   it "should raise Saxy::ParsingError on error" do
     lambda { parser.error("Error message.") }.should raise_error(Saxy::ParsingError, "Error message.")
   end
+
+  it "should return Enumerator when calling #each without a block" do
+    parser.each.should be_instance_of Enumerator
+  end
 end

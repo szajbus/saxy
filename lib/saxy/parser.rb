@@ -59,10 +59,14 @@ module Saxy
     end
 
     def each(&blk)
-      @callback = blk
+      if blk
+        @callback = blk
 
-      parser = Nokogiri::XML::SAX::Parser.new(self)
-      parser.parse_file(@xml_file)
+        parser = Nokogiri::XML::SAX::Parser.new(self)
+        parser.parse_file(@xml_file)
+      else
+        Enumerator.new(self, :each)
+      end
     end
   end
 end
