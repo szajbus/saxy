@@ -126,6 +126,11 @@ describe Saxy::Parser do
       parser.characters("bar")
       parser.end_element("foo")
     end
+
+    it "should set element's attributes when opening tag with attributes" do
+      parser.start_element("foo", [["bar", "baz"]])
+      parser.current_element.as_object.bar.should == "baz"
+    end
   end
 
   it "should raise Saxy::ParsingError on error" do

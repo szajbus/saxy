@@ -26,6 +26,10 @@ module Saxy
 
       if tag == @object_tag || elements.any?
         elements << Element.new
+
+        attributes.each do |(attr, value)|
+          current_element.set_attribute(attr, value)
+        end
       end
     end
 
