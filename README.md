@@ -43,7 +43,7 @@ Assume the XML file:
       </products>
     </webstore>
 
-You instantiate the parser by passing path to XML file and object-identyfing tag name as it's arguments.
+You instantiate the parser by passing path to XML file and object-identyfing tag name as its arguments.
 
 The following will parse the XML, find product definitions (inside `<product>` and `</product>` tags), build `OpenStruct`s and yield them inside the block:
 
@@ -58,7 +58,7 @@ The following will parse the XML, find product definitions (inside `<product>` a
       Kindle Touch - Simple-to-use touchscreen with built-in WIFI.
       http://amazon.com/kindle_touch_thumb.jpg
 
-Saxy supports Enumerable, so you can use it's goodies to your comfort without building intermediate arrays:
+Saxy supports Enumerable, so you can use its goodies to your comfort without building intermediate arrays:
 
     Saxy.parse("filename.xml", "product").map do |object|
       # map OpenStructs to ActiveRecord instances, etc.
