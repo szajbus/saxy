@@ -31,13 +31,13 @@ Assume the XML file:
         <product>
           <name>Kindle - The world's best-selling e-reader.</name>
           <images>
-            <thumb>http://amazon.com/kindle_thumb.jpg</thumb>
+            <thumbSize width="80" height="60">http://amazon.com/kindle_thumb.jpg</thumbSize>
           </images>
         </product>
         <product>
           <name>Kindle Touch - Simple-to-use touchscreen with built-in WIFI.</name>
           <images>
-            <thumb>http://amazon.com/kindle_touch_thumb.jpg</thumb>
+            <thumbSize width="120" height="90">http://amazon.com/kindle_touch_thumb.jpg</thumbSize>
           </images>
         </product>
       </products>
@@ -45,18 +45,22 @@ Assume the XML file:
 
 You instantiate the parser by passing path to XML file and object-identyfing tag name as its arguments.
 
-The following will parse the XML, find product definitions (inside `<product>` and `</product>` tags), build `OpenStruct`s and yield them inside the block:
+The following will parse the XML, find product definitions (inside `<product>` and `</product>` tags), build `OpenStruct`s and yield them inside the block.
+Tag attributes become object attributes and attributes' name are underscored.
 
     Saxy.parse("filename.xml", "product").each do |product|
       puts product.name
-      puts product.images.thumb
+      puts product.images.thumb_size
+      puts "#{product.images.thumb_size.width}x#{product.images.thumb_size.height}"
     end
 
     # =>
       Kindle - The world's best-selling e-reader.
       http://amazon.com/kindle_thumb.jpg
+      80x60
       Kindle Touch - Simple-to-use touchscreen with built-in WIFI.
       http://amazon.com/kindle_touch_thumb.jpg
+      120x90
 
 Saxy supports Enumerable, so you can use its goodies to your comfort without building intermediate arrays:
 
