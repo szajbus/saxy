@@ -1,7 +1,4 @@
-require "saxy/element"
-require "saxy/parser"
-require "saxy/parsing_error"
-require "saxy/version"
+require 'saxy/version'
 
 module Saxy
   class << self
@@ -16,7 +13,12 @@ module Saxy
     end
 
     def ruby_18?
-      RUBY_VERSION =~ /^1\.8/
+      @ruby_18 ||= RUBY_VERSION =~ /^1\.8/
     end
   end
 end
+
+require 'saxy/element'
+require 'saxy/ostruct'
+require 'saxy/parser'
+require 'saxy/parsing_error'

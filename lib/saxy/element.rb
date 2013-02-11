@@ -1,5 +1,4 @@
 require 'active_support/core_ext/string/inflections'
-require 'ostruct'
 
 module Saxy
   class Element
