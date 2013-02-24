@@ -71,6 +71,7 @@ Saxy supports Enumerable, so you can use its goodies to your comfort without bui
 You can also grab an Enumerator for external use (e.g. lazy evaluation, etc.):
 
     enumerator = Saxy.parse("filename.xml", "product").each
+    lazy       = Saxy.parse("filename.xml", "product").lazy # Ruby 2.0
 
 Multiple definitions of child objects are grouped in arrays:
 
