@@ -5,6 +5,18 @@ describe Saxy::Parser do
 
   let(:parser) { Saxy::Parser.new(fixture_file("webstore.xml"), "product") }
 
+  it "should accept string filename as xml_file" do
+    xml_file = fixture_file("webstore.xml")
+    parser = Saxy::Parser.new(xml_file, "product")
+    parser.each.to_a.size.should == 2
+  end
+
+  it "should accept IO as xml_file" do
+    xml_file = File.new(fixture_file("webstore.xml"))
+    parser = Saxy::Parser.new(xml_file, "product")
+    parser.each.to_a.size.should == 2
+  end
+
   it "should have empty tag stack" do
     parser.tags.should == %w( )
   end

@@ -67,7 +67,12 @@ module Saxy
         @callback = blk
 
         parser = Nokogiri::XML::SAX::Parser.new(self)
-        parser.parse_file(@xml_file)
+
+        if @xml_file.is_a?(IO)
+          parser.parse_io(@xml_file)
+        else
+          parser.parse_file(@xml_file)
+        end
       else
         to_enum
       end
