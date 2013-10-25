@@ -29,6 +29,7 @@ module Saxy
           value = value.first if value.size == 1
           object.send("#{name}=", value)
         end
+        object.contents = value
         object
       else
         value

@@ -50,7 +50,7 @@ Tag attributes become object attributes and attributes' name are underscored.
 
     Saxy.parse("filename.xml", "product").each do |product|
       puts product.name
-      puts product.images.thumb_size
+      puts product.images.thumb_size.contents
       puts "#{product.images.thumb_size.width}x#{product.images.thumb_size.height}"
     end
 

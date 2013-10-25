@@ -27,6 +27,15 @@ describe Saxy::Element do
     object.bar.should == 2
   end
 
+  it "should dump as object with value when attributes and contents are set" do
+    element.set_attribute("foo", "bar")
+    element.append_value("value")
+    object = element.as_object
+
+    object.foo.should == "bar"
+    object.contents.should == "value"
+  end
+
   it "should add attributes under underscored names" do
     element.set_attribute("FooBar", "baz")
     element.as_object.foo_bar.should == "baz"
