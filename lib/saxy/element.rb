@@ -1,4 +1,5 @@
 require 'active_support/core_ext/string/inflections'
+require 'hashie'
 
 module Saxy
   class Element
