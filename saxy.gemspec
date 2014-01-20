@@ -17,5 +17,6 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency "activesupport"
   gem.add_dependency "nokogiri"
+  gem.add_dependency "hashie"
   gem.add_development_dependency "rspec"
 end

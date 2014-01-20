@@ -1,4 +1,5 @@
 require 'active_support/core_ext/string/inflections'
+require 'hashie'
 
 module Saxy
   class Element
@@ -24,10 +25,10 @@ module Saxy
 
     def as_object
       if attributes.any?
-        object = OpenStruct.new
+        object = Hashie::Mash.new
         attributes.each do |name, value|
           value = value.first if value.size == 1
-          object.send("#{name}=", value)
+          object[name] = value
         end
         object.contents = value
         object

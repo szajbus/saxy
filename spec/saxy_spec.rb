@@ -3,25 +3,71 @@ require 'spec_helper'
 describe Saxy do
   include FixturesHelper
 
-  it "should find object definitions in XML file and yield them as Ruby objects" do
-    products = Saxy.parse(fixture_file("webstore.xml"), "product").inject([]) do |arr, product|
-      arr << product
-      arr
+  context "when it finds object definitions in XML file and yields a parsed object" do
+
+    let(:products) {
+        Saxy.parse(fixture_file("webstore.xml"), "product").inject([]) do |arr, product|
+          arr << product
+          arr
+        end
+    }
+
+    let(:first_object) { products[0] }
+    let(:second_object) { products[1] }
+
+    it "should be acccessible by Object-style dot notation" do
+
+      first_object.uid.should == "FFCF177"
+      first_object.name.should == "Kindle"
+      first_object.description.should == "The world's best-selling e-reader."
+      first_object.price.should == "$109"
+      first_object.images.thumb.should == "http://amazon.com/kindle_thumb.jpg"
+      first_object.images.large.should == "http://amazon.com/kindle.jpg"
+
+      second_object.uid.should == "YD26NT"
+      second_object.name.should == "Kindle Touch"
+      second_object.description.should == "Simple-to-use touchscreen with built-in WIFI."
+      second_object.price.should == "$79"
+      second_object.images.thumb.should == "http://amazon.com/kindle_touch_thumb.jpg"
+      second_object.images.large.should == "http://amazon.com/kindle_touch.jpg"
     end
 
-    products[0].uid.should == "FFCF177"
-    products[0].name.should == "Kindle"
-    products[0].description.should == "The world's best-selling e-reader."
-    products[0].price.should == "$109"
-    products[0].images.thumb.should == "http://amazon.com/kindle_thumb.jpg"
-    products[0].images.large.should == "http://amazon.com/kindle.jpg"
+    context "when accessing the returned object with Hash-style bracket syntax" do
 
-    products[1].uid.should == "YD26NT"
-    products[1].name.should == "Kindle Touch"
-    products[1].description.should == "Simple-to-use touchscreen with built-in WIFI."
-    products[1].price.should == "$79"
-    products[1].images.thumb.should == "http://amazon.com/kindle_touch_thumb.jpg"
-    products[1].images.large.should == "http://amazon.com/kindle_touch.jpg"
+      it "should respond to strings as keys" do
+
+        first_object["uid"].should == "FFCF177"
+        first_object["name"].should == "Kindle"
+        first_object["description"].should == "The world's best-selling e-reader."
+        first_object["price"].should == "$109"
+        first_object["images"].thumb.should == "http://amazon.com/kindle_thumb.jpg"
+        first_object["images"].large.should == "http://amazon.com/kindle.jpg"
+
+        second_object["uid"].should == "YD26NT"
+        second_object["name"].should == "Kindle Touch"
+        second_object["description"].should == "Simple-to-use touchscreen with built-in WIFI."
+        second_object["price"].should == "$79"
+        second_object["images"].thumb.should == "http://amazon.com/kindle_touch_thumb.jpg"
+        second_object["images"].large.should == "http://amazon.com/kindle_touch.jpg"
+      end
+
+      it "should respond to symbols as keys" do
+
+        first_object[:uid].should == "FFCF177"
+        first_object[:name].should == "Kindle"
+        first_object[:description].should == "The world's best-selling e-reader."
+        first_object[:price].should == "$109"
+        first_object[:images].thumb.should == "http://amazon.com/kindle_thumb.jpg"
+        first_object[:images].large.should == "http://amazon.com/kindle.jpg"
+
+        second_object[:uid].should == "YD26NT"
+        second_object[:name].should == "Kindle Touch"
+        second_object[:description].should == "Simple-to-use touchscreen with built-in WIFI."
+        second_object[:price].should == "$79"
+        second_object[:images].thumb.should == "http://amazon.com/kindle_touch_thumb.jpg"
+        second_object[:images].large.should == "http://amazon.com/kindle_touch.jpg"
+      end
+    end
   end
 
   it "should group multiple definitions of child objects into arrays" do

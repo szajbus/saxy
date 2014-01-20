@@ -19,6 +19,5 @@ module Saxy
 end
 
 require 'saxy/element'
-require 'saxy/ostruct'
 require 'saxy/parser'
 require 'saxy/parsing_error'
