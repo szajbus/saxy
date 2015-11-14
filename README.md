@@ -5,7 +5,7 @@
 
 Memory-efficient XML parser. Finds object definitions in XML and translates them into Ruby objects.
 
-It uses SAX parser under the hood, which means that it doesn't load the whole XML file into memory. It goes once though it and yields objects along the way.
+It uses SAX parser under the hood, which means that it doesn't load the whole XML file into memory. It goes once through it and yields objects along the way.
 
 ## Installation
 
@@ -44,10 +44,12 @@ Assume the XML file:
       </products>
     </webstore>
 
-You instantiate the parser by passing path to XML file and object-identyfing tag name as its arguments.
+You instantiate the parser by passing path to XML file or an IO-like object and object-identyfing tag name as its arguments.
 
 The following will parse the XML, find product definitions (inside `<product>` and `</product>` tags), build `OpenStruct`s and yield them inside the block.
 Tag attributes become object attributes and attributes' name are underscored.
+
+Usage with a file path:
 
     Saxy.parse("filename.xml", "product").each do |product|
       puts product.name
@@ -62,6 +64,16 @@ Tag attributes become object attributes and attributes' name are underscored.
       Kindle Touch - Simple-to-use touchscreen with built-in WIFI.
       http://amazon.com/kindle_touch_thumb.jpg
       120x90
+
+Usage with an IO-like object `ARGF`:
+
+    # > cat filename.xml | ruby this_script.rb
+    Saxy.parse(ARGF, "product").each do |product|
+      puts product.name
+    end
+
+    # =>
+      Kindle - The world's best-selling e-reader.
 
 Saxy supports Enumerable, so you can use its goodies to your comfort without building intermediate arrays:
 
