@@ -106,7 +106,7 @@ describe Saxy::Parser do
       end
 
       it "should yield the object inside the callback after detecting object tag closing" do
-        @callback.should_receive(:call).with(parser.current_element.as_object)
+        @callback.should_receive(:call).with(parser.current_element.to_h)
         parser.end_element("product")
       end
 
@@ -141,7 +141,7 @@ describe Saxy::Parser do
 
     it "should set element's attributes when opening tag with attributes" do
       parser.start_element("foo", [["bar", "baz"]])
-      parser.current_element.as_object.bar.should == "baz"
+      parser.current_element.to_h[:bar].should == "baz"
     end
   end
 
@@ -149,11 +149,8 @@ describe Saxy::Parser do
     lambda { parser.error("Error message.") }.should raise_error(Saxy::ParsingError, "Error message.")
   end
 
-  it "should return Enumerator when calling #each without a block", :unless => RUBY_1_8 do
+  it "should return Enumerator when calling #each without a block" do
     parser.each.should be_instance_of Enumerator
   end
 
-  it "should return Enumerator when calling #each without a block", :if => RUBY_1_8 do
-    parser.each.should be_instance_of Enumerable::Enumerator
-  end
 end

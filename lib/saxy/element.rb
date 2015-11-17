@@ -22,22 +22,18 @@ module Saxy
       end
     end
 
-    def as_object
-      if attributes.any?
-        object = OpenStruct.new
-        attributes.each do |name, value|
-          value = value.first if value.size == 1
-          object.send("#{name}=", value)
-        end
-        object.contents = value
-        object
-      else
-        value
+    def to_h
+      return value unless attributes.any?
+      data = attributes.reduce({}) do |memo, (name, value)|
+        memo[name.to_sym] = value.size == 1 ? value.first : value
+        memo
       end
+      data[:contents] = value
+      data
     end
 
     def attribute_name(name)
-      name.underscore
+      name.underscore.to_sym
     end
   end
 end

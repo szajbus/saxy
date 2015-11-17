@@ -45,13 +45,13 @@ Assume the XML file:
 
 You instantiate the parser by passing path to XML file and object-identyfing tag name as its arguments.
 
-The following will parse the XML, find product definitions (inside `<product>` and `</product>` tags), build `OpenStruct`s and yield them inside the block.
+The following will parse the XML, find product definitions (inside `<product>` and `</product>` tags), build `Hash`s and yield them inside the block.
 Tag attributes become object attributes and attributes' name are underscored.
 
     Saxy.parse("filename.xml", "product").each do |product|
-      puts product.name
-      puts product.images.thumb_size.contents
-      puts "#{product.images.thumb_size.width}x#{product.images.thumb_size.height}"
+      puts product[:name]
+      puts product[:images][:thumb_size][:contents]
+      puts "#{product[:images][:thumb_size][:width]}x#{product[:images][:thumb_size][:height]}"
     end
 
     # =>
@@ -65,7 +65,7 @@ Tag attributes become object attributes and attributes' name are underscored.
 Saxy supports Enumerable, so you can use its goodies to your comfort without building intermediate arrays:
 
     Saxy.parse("filename.xml", "product").map do |object|
-      # map OpenStructs to ActiveRecord instances, etc.
+      # map yielded Hash to ActiveRecord instances, etc.
     end
 
 You can also grab an Enumerator for external use (e.g. lazy evaluation, etc.):
@@ -76,7 +76,7 @@ You can also grab an Enumerator for external use (e.g. lazy evaluation, etc.):
 Multiple definitions of child objects are grouped in arrays:
 
     webstore = Saxy.parse("filename.xml", "webstore").first
-    webstore.products.product.size # => 2
+    webstore[:products][:product].size # => 2
 
 ## Contributing
 
