@@ -1,6 +1,7 @@
 # Saxy
 
-[![Build Status](https://secure.travis-ci.org/monterail/saxy.png)](http://travis-ci.org/monterail/saxy)
+[![Gem Version](https://badge.fury.io/rb/saxy.svg)](https://badge.fury.io/rb/saxy)
+[![Build Status](https://api.travis-ci.org/monterail/saxy.svg)](http://travis-ci.org/monterail/saxy)
 
 Memory-efficient XML parser. Finds object definitions in XML and translates them into Ruby objects.
 
