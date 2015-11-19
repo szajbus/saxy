@@ -21,6 +21,21 @@ Or install it yourself as:
 
     $ gem install saxy
 
+As of `0.5.0` version `saxy` requires ruby 1.9.3 or higher. Previous versions of the gem work with ruby 1.8 and 1.9.2 (see below), but they are not maintained anymore.
+
+## Ruby 1.8 support
+
+See `ruby-1.8` branch. Install with:
+
+    gem 'saxy', '~> 0.3.0'
+
+## Ruby 1.9.2 support
+
+See `ruby-1.9.2` branch. Install with:
+
+    gem 'saxy', '~> 0.4.0'
+
+
 ## Usage
 
 Assume the XML file:
