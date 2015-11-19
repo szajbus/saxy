@@ -16,8 +16,8 @@ module Saxy
     # Will yield objects inside the callback after they're built
     attr_reader :callback
 
-    def initialize(xml_file, object_tag)
-      @xml_file, @object_tag = xml_file, object_tag
+    def initialize(object, object_tag)
+      @object, @object_tag = object, object_tag
       @tags, @elements = [], []
     end
 
@@ -63,18 +63,16 @@ module Saxy
     end
 
     def each(&blk)
-      if blk
-        @callback = blk
+      return to_enum unless blk
 
-        parser = Nokogiri::XML::SAX::Parser.new(self)
+      @callback = blk
 
-        if @xml_file.is_a?(IO)
-          parser.parse_io(@xml_file)
-        else
-          parser.parse_file(@xml_file)
-        end
+      parser = Nokogiri::XML::SAX::Parser.new(self)
+
+      if @object.respond_to?(:read) && @object.respond_to?(:close)
+        parser.parse_io(@object)
       else
-        to_enum
+        parser.parse_file(@object)
       end
     end
   end
