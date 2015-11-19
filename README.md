@@ -9,9 +9,11 @@ It uses SAX parser under the hood, which means that it doesn't load the whole XM
 
 ## Installation
 
+This version supports only ruby 1.9.2, it is not maintained anymore. See master branch if you're looking for support of different ruby versions.
+
 Add this line to your application's Gemfile:
 
-    gem 'saxy'
+    gem 'saxy', '~> 0.4.0'
 
 And then execute:
 
@@ -19,7 +21,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install saxy
+    $ gem install saxy --version '~> 0.4.0'
 
 ## Usage
 
