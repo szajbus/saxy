@@ -155,11 +155,7 @@ describe Saxy::Parser do
     lambda { parser.error("Error message.") }.should raise_error(Saxy::ParsingError, "Error message.")
   end
 
-  it "should return Enumerator when calling #each without a block", :unless => RUBY_1_8 do
-    parser.each.should be_instance_of Enumerator
-  end
-
-  it "should return Enumerator when calling #each without a block", :if => RUBY_1_8 do
+  it "should return Enumerator when calling #each without a block" do
     parser.each.should be_instance_of Enumerable::Enumerator
   end
 end

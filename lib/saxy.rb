@@ -11,10 +11,6 @@ module Saxy
         parser.each
       end
     end
-
-    def ruby_18?
-      @ruby_18 ||= RUBY_VERSION =~ /^1\.8/
-    end
   end
 end
 
