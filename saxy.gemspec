@@ -15,7 +15,10 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Saxy::VERSION
 
-  gem.add_dependency "activesupport"
-  gem.add_dependency "nokogiri"
+  gem.required_ruby_version = "< 1.9"
+
+  gem.add_dependency "activesupport", "< 4.0.0"
+  gem.add_dependency "i18n", "< 0.7.0"
+  gem.add_dependency "nokogiri", "< 1.6.0"
   gem.add_development_dependency "rspec"
 end
