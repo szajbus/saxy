@@ -36,7 +36,7 @@ module Saxy
     def end_element(tag)
       tags.pop
       if element = elements.pop
-        object = element.as_object
+        object = element.to_h
 
         if current_element
           current_element.set_attribute(tag, object)
