@@ -40,71 +40,82 @@ See `ruby-1.9.2` branch. Install with:
 
 Assume the XML file:
 
-    <?xml version='1.0' encoding='UTF-8'?>
-    <webstore>
-      <name>Amazon</name>
-      <products>
-        <product>
-          <name>Kindle - The world's best-selling e-reader.</name>
-          <images>
-            <thumbSize width="80" height="60">http://amazon.com/kindle_thumb.jpg</thumbSize>
-          </images>
-        </product>
-        <product>
-          <name>Kindle Touch - Simple-to-use touchscreen with built-in WIFI.</name>
-          <images>
-            <thumbSize width="120" height="90">http://amazon.com/kindle_touch_thumb.jpg</thumbSize>
-          </images>
-        </product>
-      </products>
-    </webstore>
+````xml
+<?xml version='1.0' encoding='UTF-8'?>
+<webstore>
+  <name>Amazon</name>
+  <products>
+    <product>
+      <name>Kindle - The world's best-selling e-reader.</name>
+      <images>
+        <thumbSize width="80" height="60">http://amazon.com/kindle_thumb.jpg</thumbSize>
+      </images>
+    </product>
+    <product>
+      <name>Kindle Touch - Simple-to-use touchscreen with built-in WIFI.</name>
+      <images>
+        <thumbSize width="120" height="90">http://amazon.com/kindle_touch_thumb.jpg</thumbSize>
+      </images>
+    </product>
+  </products>
+</webstore>
+````
 
 You instantiate the parser by passing path to XML file or an IO-like object and object-identyfing tag name as its arguments.
 
-The following will parse the XML, find product definitions (inside `<product>` and `</product>` tags), build `Hash`s and yield them inside the block.
-Tag attributes become object attributes and attributes' name are underscored.
+The following will parse the XML, find product definitions (inside `<product>` and `</product>` tags), build `Hash`es and yield them inside the block. 
 
 Usage with a file path:
 
-    Saxy.parse("filename.xml", "product").each do |product|
-      puts product[:name]
-      puts product[:images][:thumb_size][:contents]
-      puts "#{product[:images][:thumb_size][:width]}x#{product[:images][:thumb_size][:height]}"
-    end
+````ruby
+Saxy.parse("filename.xml", "product").each do |product|
+  puts product[:name]
+  puts product[:images][:thumb_size][:contents]
+  puts "#{product[:images][:thumb_size][:width]}x#{product[:images][:thumb_size][:height]}"
+end
 
-    # =>
-      Kindle - The world's best-selling e-reader.
-      http://amazon.com/kindle_thumb.jpg
-      80x60
-      Kindle Touch - Simple-to-use touchscreen with built-in WIFI.
-      http://amazon.com/kindle_touch_thumb.jpg
-      120x90
+# =>
+"Kindle - The world's best-selling e-reader."
+"http://amazon.com/kindle_thumb.jpg"
+"80x60"
+"Kindle Touch - Simple-to-use touchscreen with built-in WIFI."
+"http://amazon.com/kindle_touch_thumb.jpg"
+"120x90"
+````
 
 Usage with an IO-like object `ARGF`:
 
-    # > cat filename.xml | ruby this_script.rb
-    Saxy.parse(ARGF, "product").each do |product|
-      puts product.name
-    end
+````ruby
+# > cat filename.xml | ruby this_script.rb
+Saxy.parse(ARGF, "product").each do |product|
+  puts product.name
+end
 
-    # =>
-      Kindle - The world's best-selling e-reader.
+# =>
+"Kindle - The world's best-selling e-reader."
+````
 
 Saxy supports Enumerable, so you can use its goodies to your comfort without building intermediate arrays:
 
-    Saxy.parse("filename.xml", "product").map do |object|
-      # map yielded Hash to ActiveRecord instances, etc.
-    end
+````ruby
+Saxy.parse("filename.xml", "product").map do |object|
+  # map yielded Hash to ActiveRecord instances, etc.
+end
+````
 
 You can also grab an Enumerator for external use (e.g. lazy evaluation, etc.):
 
-    enumerator = Saxy.parse("filename.xml", "product").each
-    lazy       = Saxy.parse("filename.xml", "product").lazy # Ruby 2.0
+````ruby
+enumerator = Saxy.parse("filename.xml", "product").each
+lazy       = Saxy.parse("filename.xml", "product").lazy # Ruby 2.0
+````
 
 Multiple definitions of child objects are grouped in arrays:
 
-    webstore = Saxy.parse("filename.xml", "webstore").first
-    webstore[:products][:product].size # => 2
+````ruby
+webstore = Saxy.parse("filename.xml", "webstore").first
+webstore[:products][:product].size # => 2
+````
 
 ## Contributing
 
