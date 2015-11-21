@@ -5,7 +5,9 @@
 
 Memory-efficient XML parser. Finds object definitions in XML and translates them into Ruby objects.
 
-It uses SAX parser under the hood, which means that it doesn't load the whole XML file into memory. It goes once through it and yields objects along the way.
+It uses SAX parser under the hood, which means that it doesn't load the whole XML file into memory. It goes once through it and yields objects along the way. 
+
+In result the memory footprint of the parser remains small and more or less constant irrespective of the size of the XML file, be it few KB or hundreds of GB.
 
 ## Installation
 
