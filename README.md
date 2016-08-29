@@ -1,11 +1,11 @@
 # Saxy
 
 [![Gem Version](https://badge.fury.io/rb/saxy.svg)](https://badge.fury.io/rb/saxy)
-[![Build Status](https://api.travis-ci.org/monterail/saxy.svg)](http://travis-ci.org/monterail/saxy)
+[![Build Status](https://api.travis-ci.org/humante/saxy.svg)](http://travis-ci.org/humante/saxy)
 
 Memory-efficient XML parser. Finds object definitions in XML and translates them into Ruby objects.
 
-It uses SAX parser under the hood, which means that it doesn't load the whole XML file into memory. It goes once through it and yields objects along the way. 
+It uses SAX parser under the hood, which means that it doesn't load the whole XML file into memory. It goes once through it and yields objects along the way.
 
 In result the memory footprint of the parser remains small and more or less constant irrespective of the size of the XML file, be it few KB or hundreds of GB.
 
@@ -65,7 +65,7 @@ Assume the XML file:
 
 You instantiate the parser by passing path to XML file or an IO-like object and object-identyfing tag name as its arguments.
 
-The following will parse the XML, find product definitions (inside `<product>` and `</product>` tags), build `Hash`es and yield them inside the block. 
+The following will parse the XML, find product definitions (inside `<product>` and `</product>` tags), build `Hash`es and yield them inside the block.
 
 Usage with a file path:
 
