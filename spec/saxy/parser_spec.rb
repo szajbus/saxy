@@ -10,43 +10,43 @@ describe Saxy::Parser do
   it "should accept string filename for parsing" do
     xml_file = fixture_file("webstore.xml")
     parser = Saxy::Parser.new(xml_file, "product")
-    parser.each.to_a.size.should == 2
+    expect(parser.each.to_a.size).to eq(2)
   end
 
   it "should accept IO for parsing" do
     parser = Saxy::Parser.new(file_io, "product")
-    parser.each.to_a.size.should == 2
+    expect(parser.each.to_a.size).to eq(2)
   end
 
   it "should accept an IO-like for parsing" do
     parser = Saxy::Parser.new(io_like, "product")
-    parser.each.to_a.size.should == 2
+    expect(parser.each.to_a.size).to eq(2)
   end
 
   it "should have empty tag stack" do
-    parser.tags.should == %w( )
+    expect(parser.tags).to eq(%w( ))
   end
 
   it "should push/pop tag names on/from tag stack when going down/up the XML tree" do
-    parser.tags.should == %w( )
+    expect(parser.tags).to eq(%w( ))
 
     parser.start_element('webstore')
-    parser.tags.should == %w( webstore )
+    expect(parser.tags).to eq(%w( webstore ))
 
     parser.start_element('products')
-    parser.tags.should == %w( webstore products )
+    expect(parser.tags).to eq(%w( webstore products ))
 
     parser.start_element('product')
-    parser.tags.should == %w( webstore products product )
+    expect(parser.tags).to eq(%w( webstore products product ))
 
     parser.end_element('product')
-    parser.tags.should == %w( webstore products )
+    expect(parser.tags).to eq(%w( webstore products ))
 
     parser.end_element('products')
-    parser.tags.should == %w( webstore )
+    expect(parser.tags).to eq(%w( webstore ))
 
     parser.end_element('webstore')
-    parser.tags.should == %w( )
+    expect(parser.tags).to eq(%w( ))
   end
 
   context "when detecting object tag opening" do
@@ -55,7 +55,7 @@ describe Saxy::Parser do
     end
 
     it "should add new element to stack" do
-      parser.elements.size.should == 1
+      expect(parser.elements.size).to eq(1)
     end
   end
 
@@ -65,14 +65,14 @@ describe Saxy::Parser do
     end
 
     it "should not add new element to stack" do
-      parser.elements.should be_empty
+      expect(parser.elements).to be_empty
     end
   end
 
   context "with non-empty element stack" do
     before do
       parser.start_element("product")
-      parser.elements.should_not be_empty
+      expect(parser.elements).to_not be_empty
     end
 
     context "when detecting object tag opening" do
@@ -81,7 +81,7 @@ describe Saxy::Parser do
       end
 
       it "should add new element to stack" do
-        parser.elements.size.should == 2
+        expect(parser.elements.size).to eq(2)
       end
     end
 
@@ -91,7 +91,7 @@ describe Saxy::Parser do
       end
 
       it "should not add new element to stack" do
-        parser.elements.size.should == 2
+        expect(parser.elements.size).to eq(2)
       end
     end
 
@@ -101,36 +101,36 @@ describe Saxy::Parser do
       end
 
       it "should pop element from stack" do
-        parser.elements.should be_empty
+        expect(parser.elements).to be_empty
       end
     end
 
     context "with callback defined" do
       before do
         @callback = lambda { |object| object }
-        parser.stub(:callback).and_return(@callback)
+        allow(parser).to receive(:callback).and_return(@callback)
       end
 
       it "should yield the object inside the callback after detecting object tag closing" do
-        @callback.should_receive(:call).with(parser.current_element.to_h)
+        expect(@callback).to receive(:call).with(parser.current_element.to_h)
         parser.end_element("product")
       end
 
       it "should not yield the object inside the callback after detecting other tag closing" do
         parser.start_element("other")
-        @callback.should_not_receive(:call)
+        expect(@callback).to_not receive(:call)
         parser.end_element("other")
       end
     end
 
     it "should append cdata block's contents to top element's value when detecting cdata block" do
-      parser.current_element.should_receive(:append_value).with("foo")
+      expect(parser.current_element).to receive(:append_value).with("foo")
       parser.cdata_block("foo")
     end
 
     it "should append characters to top element's value when detecting characters block" do
-      parser.current_element.should_receive(:append_value).with("foo")
-      parser.current_element.should_receive(:append_value).with("bar")
+      expect(parser.current_element).to receive(:append_value).with("foo")
+      expect(parser.current_element).to receive(:append_value).with("bar")
       parser.characters("foo")
       parser.characters("bar")
     end
@@ -138,7 +138,7 @@ describe Saxy::Parser do
     it "should set element's attribute after processing tags" do
       element = parser.current_element
 
-      element.should_receive(:set_attribute).with("foo", "bar")
+      expect(element).to receive(:set_attribute).with("foo", "bar")
 
       parser.start_element("foo")
       parser.characters("bar")
@@ -147,16 +147,16 @@ describe Saxy::Parser do
 
     it "should set element's attributes when opening tag with attributes" do
       parser.start_element("foo", [["bar", "baz"]])
-      parser.current_element.to_h[:bar].should == "baz"
+      expect(parser.current_element.to_h[:bar]).to eq("baz")
     end
   end
 
   it "should raise Saxy::ParsingError on error" do
-    lambda { parser.error("Error message.") }.should raise_error(Saxy::ParsingError, "Error message.")
+    expect { parser.error("Error message.") }.to raise_error(Saxy::ParsingError, "Error message.")
   end
 
   it "should return Enumerator when calling #each without a block" do
-    parser.each.should be_instance_of Enumerator
+    expect(parser.each).to be_an(Enumerator)
   end
 
 end
