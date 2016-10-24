@@ -85,7 +85,7 @@ end
 "120x90"
 ````
 
-Usage with an IO-like object `ARGF`:
+Usage with an IO-like object `ARGF` or `$stdin`:
 
 ````ruby
 # > cat filename.xml | ruby this_script.rb
