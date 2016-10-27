@@ -1,5 +1,3 @@
-require 'active_support/core_ext/string/inflections'
-
 module Saxy
   class Element
     attr_reader :attributes, :value
@@ -33,7 +31,18 @@ module Saxy
     end
 
     def attribute_name(name)
-      name.underscore.to_sym
+      underscore(name).to_sym
+    end
+
+    private
+
+    def underscore(word)
+      word = word.dup
+      word.gsub!(/([A-Z\d]+)([A-Z][a-z])/,'\1_\2')
+      word.gsub!(/([a-z\d])([A-Z])/,'\1_\2')
+      word.tr!("-", "_")
+      word.downcase!
+      word
     end
   end
 end
