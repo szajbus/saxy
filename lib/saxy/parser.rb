@@ -68,7 +68,9 @@ module Saxy
 
       @callback = blk
 
-      parser = Nokogiri::XML::SAX::Parser.new(self, @encoding)
+      args = [self, @encoding].compact
+
+      parser = Nokogiri::XML::SAX::Parser.new(*args)
 
       if @object.respond_to?(:read) && @object.respond_to?(:close)
         parser.parse_io(@object)
