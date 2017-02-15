@@ -16,9 +16,10 @@ module Saxy
     # Will yield objects inside the callback after they're built
     attr_reader :callback
 
-    def initialize(object, object_tag)
+    def initialize(object, object_tag, encoding=nil)
       @object, @object_tag = object, object_tag
       @tags, @elements = [], []
+      @encoding = encoding
     end
 
     def start_element(tag, attributes=[])
@@ -67,7 +68,7 @@ module Saxy
 
       @callback = blk
 
-      parser = Nokogiri::XML::SAX::Parser.new(self)
+      parser = Nokogiri::XML::SAX::Parser.new(self, @encoding)
 
       if @object.respond_to?(:read) && @object.respond_to?(:close)
         parser.parse_io(@object)
