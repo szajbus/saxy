@@ -6,3 +6,12 @@ rvm:
   - 2.1
   - 2.0.0
   - 1.9.3
+gemfile:
+  - gemfiles/nokogiri_1.6.gemfile
+  - gemfiles/nokogiri_latest.gemfile
+matrix:
+  exclude:
+    - rvm: 2.0.0
+      gemfile: gemfiles/nokogiri_latest.gemfile
+    - rvm: 1.9.3
+      gemfile: gemfiles/nokogiri_latest.gemfile
