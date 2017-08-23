@@ -1,4 +1,4 @@
 module Saxy
-  class ParsingError < ::Exception
+  class ParsingError < ::StandardError
   end
 end
