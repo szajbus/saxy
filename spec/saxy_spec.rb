@@ -34,4 +34,9 @@ describe Saxy do
   it "should return Enumerator when calling #parse without a block" do
     expect(Saxy.parse(fixture_file("webstore.xml"), "product").each).to be_an(Enumerator)
   end
+
+  it "should pass options to Parser's initializer" do
+    expect(Saxy::Parser).to receive(:new).with("filename", "object_tag", { foo: 'bar' }).and_call_original
+    Saxy.parse("filename", "object_tag", { foo: 'bar' })
+  end
 end

@@ -2,8 +2,8 @@ require 'saxy/version'
 
 module Saxy
   class << self
-    def parse(object, object_tag, &blk)
-      parser = Parser.new(object, object_tag)
+    def parse(object, object_tag, options={}, &blk)
+      parser = Parser.new(object, object_tag, options)
 
       if blk
         parser.each(blk)
