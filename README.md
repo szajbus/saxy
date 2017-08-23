@@ -5,7 +5,7 @@
 
 Memory-efficient XML parser. Finds object definitions in XML and translates them into Ruby objects.
 
-It uses SAX parser under the hood, which means that it doesn't load the whole XML file into memory. It goes once through it and yields objects along the way.
+It uses SAX parser (provided by Nokogiri gem) under the hood, which means that it doesn't load the whole XML file into memory. It goes once through it and yields objects along the way.
 
 In result the memory footprint of the parser remains small and more or less constant irrespective of the size of the XML file, be it few KB or hundreds of GB.
 
@@ -40,7 +40,29 @@ See `ruby-1.9.2` branch. Install with:
 
 ## Usage
 
-Assume the XML file:
+You instantiate the parser by passing path to XML file or an IO-like object, object-identifying tag name and options hash (optionally) as its arguments.
+
+```ruby
+parser = Saxy.parse(path_or_io, object_tag, options = {})
+```
+
+Then iterate over it using `each` (or any of convenient methods provided by `Enumerable` mix-in).
+
+```ruby
+parser.each do |object|
+  ...
+end
+```
+
+### Options
+
+* `encoding` - Forces the parser to work in given encoding
+* `recovery` - Should this parser recover from structural errors? It will not stop processing file on structural errors if set to `true`.
+* `replace_entities` - Should this parser replace entities? `&amp;` will get converted to `&` if set to `true`.
+
+## Example
+
+Assume the XML file (an imaginary product feed):
 
 ````xml
 <?xml version='1.0' encoding='UTF-8'?>
@@ -62,8 +84,6 @@ Assume the XML file:
   </products>
 </webstore>
 ````
-
-You instantiate the parser by passing path to XML file or an IO-like object and object-identyfing tag name as its arguments.
 
 The following will parse the XML, find product definitions (inside `<product>` and `</product>` tags), build `Hash`es and yield them inside the block.
 
