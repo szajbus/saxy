@@ -1,5 +1,9 @@
 # Saxy Changelog
 
+## 0.6.1
+
+* Fixed passing options from `Saxy.parse` to parser's initializer
+
 ## 0.6.0
 
 * [BREAKING] `Saxy::ParsingError` now inherits from `StandardError`, not `Exception`.
