@@ -19,10 +19,12 @@ module Saxy
     # Parser context
     attr_reader :context
 
-    def initialize(object, object_tag, encoding=nil)
-      @object, @object_tag = object, object_tag
+    # Parser options
+    attr_reader :options
+
+    def initialize(object, object_tag, options={})
+      @object, @object_tag, @options = object, object_tag, options
       @tags, @elements = [], []
-      @encoding = encoding
     end
 
     def start_element(tag, attributes=[])
@@ -71,7 +73,7 @@ module Saxy
 
       @callback = blk
 
-      args = [self, @encoding].compact
+      args = [self, options[:encoding]].compact
 
       parser = Nokogiri::XML::SAX::Parser.new(*args)
       context_blk = proc { |context| @context = context }

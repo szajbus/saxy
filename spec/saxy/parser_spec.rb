@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Saxy::Parser do
   include FixturesHelper
 
-  let(:parser) { Saxy::Parser.new(fixture_file("webstore.xml"), "product", "UTF-8") }
-  let(:invalid_parser) { Saxy::Parser.new(fixture_file("invalid.xml"), "product", "UTF-8") }
+  let(:parser) { Saxy::Parser.new(fixture_file("webstore.xml"), "product") }
+  let(:invalid_parser) { Saxy::Parser.new(fixture_file("invalid.xml"), "product") }
   let(:file_io) { File.new(fixture_file("webstore.xml")) }
   let(:io_like) { IOLike.new(file_io) }
 
@@ -20,7 +20,7 @@ describe Saxy::Parser do
   end
 
   it "should accept optional force-encoding" do
-    parser = Saxy::Parser.new(file_io, "product", 'UTF-8')
+    parser = Saxy::Parser.new(file_io, "product", encoding: "UTF-8")
     expect(Nokogiri::XML::SAX::Parser).to receive(:new).with(parser, "UTF-8").and_call_original
     expect(parser.each.to_a.size).to eq(2)
   end
