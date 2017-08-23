@@ -141,6 +141,18 @@ webstore = Saxy.parse("filename.xml", "webstore").first
 webstore[:products][:product].size # => 2
 ````
 
+## Debugging
+
+Invalid XML files happen a lot and error messages are not always extremely helpful. In case of a parsing error, some additional information can be retrieved from parser's context.
+
+```ruby
+  begin
+    Saxy.parse(...) { ... }
+  rescue e => Saxy::ParsingError
+    puts "#{e.message} at #{e.context.line} line and #{e.context.column}"
+  end
+```
+
 ## Contributing
 
 1. Fork it
