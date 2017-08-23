@@ -39,6 +39,9 @@ See `ruby-1.9.2` branch. Install with:
 
     gem 'saxy', '~> 0.4.0'
 
+## Changelog
+
+See `CHANGELOG.md` file.
 
 ## Usage
 
