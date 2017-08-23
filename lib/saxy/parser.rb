@@ -16,6 +16,9 @@ module Saxy
     # Will yield objects inside the callback after they're built
     attr_reader :callback
 
+    # Parser context
+    attr_reader :context
+
     def initialize(object, object_tag, encoding=nil)
       @object, @object_tag = object, object_tag
       @tags, @elements = [], []
@@ -56,7 +59,7 @@ module Saxy
     end
 
     def error(message)
-      raise ParsingError.new(message)
+      raise ParsingError.new(message, context)
     end
 
     def current_element
@@ -71,11 +74,12 @@ module Saxy
       args = [self, @encoding].compact
 
       parser = Nokogiri::XML::SAX::Parser.new(*args)
+      context_blk = proc { |context| @context = context }
 
       if @object.respond_to?(:read) && @object.respond_to?(:close)
-        parser.parse_io(@object)
+        parser.parse_io(@object, &context_blk)
       else
-        parser.parse_file(@object)
+        parser.parse_file(@object, &context_blk)
       end
     end
   end
