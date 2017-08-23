@@ -25,6 +25,13 @@ describe Saxy::Parser do
     expect(parser.each.to_a.size).to eq(2)
   end
 
+  it "should pass options to parser context" do
+    parser = Saxy::Parser.new(file_io, "product", recovery: true, replace_entities: true)
+    parser.each.to_a
+    expect(parser.context.recovery).to be_truthy
+    expect(parser.context.replace_entities).to be_truthy
+  end
+
   it "should accept an IO-like for parsing" do
     parser = Saxy::Parser.new(io_like, "product")
     expect(parser.each.to_a.size).to eq(2)

@@ -76,13 +76,22 @@ module Saxy
       args = [self, options[:encoding]].compact
 
       parser = Nokogiri::XML::SAX::Parser.new(*args)
-      context_blk = proc { |context| @context = context }
 
       if @object.respond_to?(:read) && @object.respond_to?(:close)
         parser.parse_io(@object, &context_blk)
       else
         parser.parse_file(@object, &context_blk)
       end
+    end
+
+    def context_blk
+      proc { |context|
+        [:recovery, :replace_entities].each do |key|
+          context.send("#{key}=", options[key]) if options.has_key?(key)
+        end
+
+        @context = context
+      }
     end
   end
 end
