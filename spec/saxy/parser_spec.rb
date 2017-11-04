@@ -161,7 +161,7 @@ describe Saxy::Parser do
 
     it "should set element's attributes when opening tag with attributes" do
       parser.start_element("foo", [["bar", "baz"]])
-      expect(parser.current_element.to_h[:bar]).to eq("baz")
+      expect(parser.current_element.to_h["bar"]).to eq("baz")
     end
   end
 

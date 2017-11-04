@@ -96,9 +96,9 @@ Usage with a file path:
 
 ````ruby
 Saxy.parse("filename.xml", "product").each do |product|
-  puts product[:name]
-  puts product[:images][:thumb_size][:contents]
-  puts "#{product[:images][:thumb_size][:width]}x#{product[:images][:thumb_size][:height]}"
+  puts product["name"]
+  puts product["images"]["thumb_size"]["contents"]
+  puts "#{product["images"]["thumb_size"]["width"]}x#{product["images"]["thumb_size"]["height"]}"
 end
 
 # =>
@@ -115,7 +115,7 @@ Usage with an IO-like object `ARGF` or `$stdin`:
 ````ruby
 # > cat filename.xml | ruby this_script.rb
 Saxy.parse(ARGF, "product").each do |product|
-  puts product.name
+  puts product["name"]
 end
 
 # =>
@@ -141,7 +141,7 @@ Multiple definitions of child objects are grouped in arrays:
 
 ````ruby
 webstore = Saxy.parse("filename.xml", "webstore").first
-webstore[:products][:product].size # => 2
+webstore["products"]["product"].size # => 2
 ````
 
 ## Debugging

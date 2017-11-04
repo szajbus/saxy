@@ -23,15 +23,15 @@ module Saxy
     def to_h
       return value unless attributes.any?
       data = attributes.reduce({}) do |memo, (name, value)|
-        memo[name.to_sym] = value.size == 1 ? value.first : value
+        memo[name] = value.size == 1 ? value.first : value
         memo
       end
-      data[:contents] = value
+      data["contents"] = value
       data
     end
 
     def attribute_name(name)
-      underscore(name).to_sym
+      underscore(name)
     end
 
     private

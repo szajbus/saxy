@@ -23,8 +23,8 @@ describe Saxy::Element do
     expect(element).to receive(:attributes).at_least(:once).and_return("foo" => 1, "bar" => 2)
     object = element.to_h
 
-    expect(object[:foo]).to eq(1)
-    expect(object[:bar]).to eq(2)
+    expect(object["foo"]).to eq(1)
+    expect(object["bar"]).to eq(2)
   end
 
   it "should dump as object with value when attributes and contents are set" do
@@ -32,18 +32,18 @@ describe Saxy::Element do
     element.append_value("value")
     object = element.to_h
 
-    expect(object[:foo]).to eq("bar")
-    expect(object[:contents]).to eq("value")
+    expect(object["foo"]).to eq("bar")
+    expect(object["contents"]).to eq("value")
   end
 
   it "should add attributes under underscored names" do
     element.set_attribute("FooBar", "baz")
-    expect(element.to_h[:foo_bar]).to eq("baz")
+    expect(element.to_h["foo_bar"]).to eq("baz")
   end
 
   it "should create array if adding multiple attributtes with the same name" do
     element.set_attribute("foo", "bar")
     element.set_attribute("foo", "baz")
-    expect(element.to_h[:foo]).to eq(["bar", "baz"])
+    expect(element.to_h["foo"]).to eq(["bar", "baz"])
   end
 end
