@@ -3,9 +3,9 @@
 [![Gem Version](https://badge.fury.io/rb/saxy.svg)](https://badge.fury.io/rb/saxy)
 [![Build Status](https://api.travis-ci.org/humante/saxy.svg)](http://travis-ci.org/humante/saxy)
 
-Memory-efficient XML parser. Finds object definitions in XML and translates them into Ruby objects.
+Memory-efficient XML parser. Finds object definitions in XML and translates them into Ruby hashes.
 
-It uses SAX parser (provided by Nokogiri gem) under the hood, which means that it doesn't load the whole XML file into memory. It goes once through it and yields objects along the way.
+It uses SAX parser (provided by Nokogiri gem) under the hood, which means that it doesn't load the whole XML file into memory. It goes once through it and yields hashes along the way.
 
 In result the memory footprint of the parser remains small and more or less constant irrespective of the size of the XML file, be it few KB or hundreds of GB.
 
