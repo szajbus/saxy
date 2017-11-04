@@ -1,5 +1,9 @@
 # Saxy Changelog
 
+## 0.7.0
+
+* [BREAKING] Yielded hashes now have strings as keys instead of symbols (performance and security fix).
+
 ## 0.6.1
 
 * Fixed passing options from `Saxy.parse` to parser's initializer
