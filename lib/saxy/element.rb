@@ -15,6 +15,7 @@ module Saxy
 
     def append_value(string)
       unless (string = string.strip).empty?
+        string = string == '&' ? ' & ' : string
         @value ||= ""
         @value << string
       end
