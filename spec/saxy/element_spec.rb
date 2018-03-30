@@ -14,6 +14,11 @@ describe Saxy::Element do
     expect(element.value).to eq("foobar")
   end
 
+  it "should preserve spacing around :&amp;" do
+    element.append_value('&')
+    expect(element.value).to eq(' & ')
+  end
+
   it "should dump as string when no attributes are set" do
     expect(element).to receive(:value).and_return("foo")
     expect(element.to_h).to eq("foo")
