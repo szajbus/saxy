@@ -64,6 +64,14 @@ end
 * `encoding` - Forces the parser to work in given encoding
 * `recovery` - Should this parser recover from structural errors? It will not stop processing file on structural errors if set to `true`.
 * `replace_entities` - Should this parser replace entities? `&amp;` will get converted to `&` if set to `true`.
+* `error_handler` - If set to a callable, parser will call it with any error it encounters instead of raising exceptions.
+
+Combination of `error_handler` and `recovery` options allows for continued processing when encountering recoverable errors (e.g. unescaped [predefined entities](https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references#Predefined_entities_in_XML)).
+
+```ruby
+error_handler = proc { |e| $stderr.puts "#{e.message} at line #{e.context.line}, column #{e.context.column}." }
+Saxy.parse(path_or_io, object_tag, error_handler: error_handler, recovery: true) { ... }
+```
 
 ## Example
 
