@@ -9,6 +9,7 @@ module Saxy
 
     def set_attribute(name, value)
       name = attribute_name(name)
+
       attributes[name] ||= []
       attributes[name] << value
     end
@@ -26,10 +27,12 @@ module Saxy
 
     def to_h
       return value unless attributes.any?
+
       data = attributes.reduce({}) do |memo, (name, value)|
         memo[name] = value.size == 1 ? value.first : value
         memo
       end
+
       data["contents"] = value
       data
     end

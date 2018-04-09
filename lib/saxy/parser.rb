@@ -41,6 +41,7 @@ module Saxy
 
     def end_element(tag)
       tags.pop
+
       if element = elements.pop
         object = element.to_h
 
@@ -79,8 +80,7 @@ module Saxy
 
       @callback = blk
 
-      args = [self, options[:encoding]].compact
-
+      args   = [self, options[:encoding]].compact
       parser = Nokogiri::XML::SAX::Parser.new(*args)
 
       if @object.respond_to?(:read) && @object.respond_to?(:close)
