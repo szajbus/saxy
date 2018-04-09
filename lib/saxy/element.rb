@@ -1,6 +1,6 @@
 module Saxy
   class Element
-    attr_reader :attributes, :value
+    attr_reader :attributes
 
     def initialize
       @attributes = {}
@@ -14,10 +14,14 @@ module Saxy
     end
 
     def append_value(string)
-      unless (string = string.strip).empty?
+      if @value || !string.strip.empty?
         @value ||= ""
         @value << string
       end
+    end
+
+    def value
+      @value && @value.strip
     end
 
     def to_h

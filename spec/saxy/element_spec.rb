@@ -8,10 +8,12 @@ describe Saxy::Element do
     expect(element.value).to be_nil
   end
 
-  it "should append stripped value" do
-    element.append_value(" foo ")
-    element.append_value(" bar ")
-    expect(element.value).to eq("foobar")
+  it "should strip leading and trailing whitespace" do
+    element.append_value(" one two ")
+    element.append_value("&")
+    element.append_value(" three\nfour")
+    element.append_value("\t\t")
+    expect(element.value).to eq("one two & three\nfour")
   end
 
   it "should dump as string when no attributes are set" do
