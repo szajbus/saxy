@@ -4,7 +4,6 @@ describe Saxy::Parser do
   include FixturesHelper
 
   let(:parser) { Saxy::Parser.new(fixture_file("webstore.xml"), "product") }
-  let(:invalid_parser) { Saxy::Parser.new(fixture_file("invalid.xml"), "product") }
   let(:file_io) { File.new(fixture_file("webstore.xml")) }
   let(:io_like) { IOLike.new(file_io) }
 
@@ -165,12 +164,26 @@ describe Saxy::Parser do
     end
   end
 
-  it "should raise Saxy::ParsingError on error" do
-    expect { invalid_parser.each.to_a }.to raise_error { |error|
-      expect(error).to be_a(Saxy::ParsingError)
-      expect(error.message).to match(/Opening and ending tag mismatch/)
-      expect(error.context).to be_a(Nokogiri::XML::SAX::ParserContext)
-    }
+  context "when error handler is not set" do
+    let(:parser) { Saxy::Parser.new(fixture_file("invalid.xml"), "product") }
+
+    it "should raise Saxy::ParsingError on error" do
+      expect { parser.each.to_a }.to raise_error { |error|
+        expect(error).to be_a(Saxy::ParsingError)
+        expect(error.message).to match(/xmlParseEntityRef: no name/)
+        expect(error.context).to be_a(Nokogiri::XML::SAX::ParserContext)
+      }
+    end
+  end
+
+  context "when error handler is set" do
+    let(:handler) { proc { |error| error } }
+    let(:parser) { Saxy::Parser.new(fixture_file("invalid.xml"), "product", error_handler: handler) }
+
+    it "should call error handler passing Saxy::ParsingError instance" do
+      expect(handler).to receive(:call).with(Saxy::ParsingError)
+      parser.each.to_a
+    end
   end
 
   it "should return Enumerator when calling #each without a block" do

@@ -61,7 +61,13 @@ module Saxy
     end
 
     def error(message)
-      raise ParsingError.new(message, context)
+      error = ParsingError.new(message, context)
+
+      if options[:error_handler].respond_to?(:call)
+        options[:error_handler].call(error)
+      else
+        raise error
+      end
     end
 
     def current_element

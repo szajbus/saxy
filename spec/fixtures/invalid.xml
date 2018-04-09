@@ -3,7 +3,7 @@
   <products>
     <product>
       <uid>FFCF177</uid>
-      <name>No closing tag...
+      <name>Unescaped & ampersand</name>
     </product>
   </products>
 </webstore>
