@@ -1,5 +1,10 @@
 # Saxy Changelog
 
+## 0.7.1
+
+* Fixed whitespace stripping from elements' contents, now only leading and trailing whitespace is stripped (reported by @wzcolon, thanks!).
+* Added `error_handler` option to make it possible to handle errors on-the-fly instead of raising them.
+
 ## 0.7.0
 
 * [BREAKING] Yielded hashes now have strings as keys instead of symbols (performance and security fix).
