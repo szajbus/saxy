@@ -1,5 +1,7 @@
+require 'forwardable'
+
 class IOLike
-  extend Forwardable
+  extend ::Forwardable
 
   def_delegators :@io, :read, :close
 
