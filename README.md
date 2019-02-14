@@ -1,7 +1,7 @@
 # Saxy
 
 [![Gem Version](https://badge.fury.io/rb/saxy.svg)](https://badge.fury.io/rb/saxy)
-[![Build Status](https://api.travis-ci.org/humante/saxy.svg)](http://travis-ci.org/humante/saxy)
+[![Build Status](https://api.travis-ci.org/szajbus/saxy.svg)](http://travis-ci.org/szajbus/saxy)
 
 Memory-efficient XML parser. Finds object definitions in XML and translates them into Ruby hashes.
 
